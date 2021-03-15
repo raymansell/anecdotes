@@ -29,4 +29,4 @@ app.use(express.urlencoded({ limit: '30mb', extended: true }));
 app.use(cors());
 
 // Routes
-app.use('/posts', postsRoutes);
+app.use('/api/posts', postsRoutes);
