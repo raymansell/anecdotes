@@ -1,0 +1,2 @@
+export const INITIALIZE_POSTS = 'INITIALIZE_POSTS';
+export const CREATE_NEW_POST = 'CREATE_NEW_POST';
