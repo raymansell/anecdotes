@@ -7,7 +7,7 @@ const reducer = (state = [], action) => {
     }
 
     case CREATE_NEW_POST: {
-      return state;
+      return [...state, action.payload.newPost];
     }
     default:
       return state;

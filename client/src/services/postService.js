@@ -15,7 +15,10 @@ const getAllPosts = async () => {
   return response.data;
 };
 
-const createPost = async () => {};
+const createPost = async (postData) => {
+  const response = await axios.post(API_BASE_URL, postData);
+  return response.data;
+};
 
 const likePost = async () => {};
 

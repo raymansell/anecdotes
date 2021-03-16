@@ -1,5 +1,5 @@
 import postService from '../services/postService';
-import { INITIALIZE_POSTS } from '../constants/postsConstants';
+import { INITIALIZE_POSTS, CREATE_NEW_POST } from '../constants/postsConstants';
 
 // Action creators
 
@@ -9,6 +9,16 @@ export const initializePosts = () => {
     dispatch({
       type: INITIALIZE_POSTS,
       payload: { posts },
+    });
+  };
+};
+
+export const createPost = (postData) => {
+  return async (dispatch) => {
+    const newPost = await postService.createPost(postData);
+    dispatch({
+      type: CREATE_NEW_POST,
+      payload: { newPost },
     });
   };
 };
