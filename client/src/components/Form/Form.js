@@ -29,12 +29,12 @@ const Form = () => {
     <Paper className={classes.paper}>
       <form
         autoComplete='off'
-        noValidate
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
         <Typography variant='h6'>Creating an Anecdote</Typography>
         <TextField
+          required
           name='creator'
           variant='outlined'
           label='Creator'
@@ -48,6 +48,7 @@ const Form = () => {
           }
         ></TextField>
         <TextField
+          required
           name='title'
           variant='outlined'
           label='Title'
@@ -61,6 +62,7 @@ const Form = () => {
           }
         ></TextField>
         <TextField
+          required
           name='message'
           variant='outlined'
           label='Message'
@@ -74,6 +76,7 @@ const Form = () => {
           }
         ></TextField>
         <TextField
+          required
           name='tags'
           variant='outlined'
           label='Tags'
@@ -88,6 +91,7 @@ const Form = () => {
         ></TextField>
         <div className={classes.fileInput}>
           <FileBase
+            required
             type='file'
             multiple={false}
             onDone={({ base64 }) =>
