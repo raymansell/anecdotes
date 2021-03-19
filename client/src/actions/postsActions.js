@@ -4,6 +4,7 @@ import {
   CREATE_NEW_POST,
   SET_POST_TO_EDIT,
   UPDATE_POST,
+  DELETE_POST,
 } from '../constants/postsConstants';
 
 // Action creators
@@ -35,12 +36,22 @@ export const setPostToEdit = (id) => {
   };
 };
 
-export const updatePost = (postId, postData) => {
+export const updatePost = (id, postData) => {
   return async (dispatch) => {
-    const updatedPost = await postService.updatePost(postId, postData);
+    const updatedPost = await postService.updatePost(id, postData);
     dispatch({
       type: UPDATE_POST,
       payload: { updatedPost },
+    });
+  };
+};
+
+export const deletePost = (id) => {
+  return async (dispatch) => {
+    await postService.deletePost(id);
+    dispatch({
+      type: DELETE_POST,
+      payload: { id },
     });
   };
 };

@@ -27,7 +27,10 @@ const updatePost = async (postId, postData) => {
   return response.data;
 };
 
-const deletePost = async () => {};
+const deletePost = async (postId) => {
+  const response = await axios.delete(`${API_BASE_URL}/${postId}`);
+  return response.data;
+};
 
 const postService = {
   getAllPosts,
