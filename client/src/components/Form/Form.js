@@ -1,15 +1,19 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextField, Button, Typography, Paper } from '@material-ui/core';
 import FileBase from 'react-file-base64';
-import { createPost } from '../../actions/postsActions';
+import {
+  createPost,
+  updatePost,
+  setPostToEdit,
+} from '../../actions/postsActions';
 
 import useStyles from './styles';
 
 const Form = () => {
   const classes = useStyles();
-
   const dispatch = useDispatch();
+
   const [postData, setPostData] = useState({
     creator: '',
     title: '',
@@ -18,12 +22,41 @@ const Form = () => {
     selectedFile: '',
   });
 
+  // only defined when editing a post
+  const currentPost = useSelector((state) =>
+    state.posts.postToEdit
+      ? state.posts.postsList.find(
+          (post) => post._id === state.posts.postToEdit
+        )
+      : null
+  );
+
+  useEffect(() => {
+    if (currentPost !== null) {
+      setPostData(currentPost);
+    }
+  }, [currentPost]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPost(postData));
+    if (currentPost !== null) {
+      dispatch(updatePost(currentPost._id, postData));
+    } else {
+      dispatch(createPost(postData));
+    }
+    clear();
   };
 
-  const clear = () => {};
+  const clear = () => {
+    dispatch(setPostToEdit(null));
+    setPostData({
+      creator: '',
+      title: '',
+      message: '',
+      tags: '',
+      selectedFile: '',
+    });
+  };
 
   return (
     <Paper className={classes.paper}>
@@ -32,7 +65,9 @@ const Form = () => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant='h6'>Creating an Anecdote</Typography>
+        <Typography variant='h6'>
+          {currentPost ? 'Editing' : 'Creating'} an Anecdote
+        </Typography>
         <TextField
           required
           name='creator'
@@ -53,7 +88,7 @@ const Form = () => {
           variant='outlined'
           label='Title'
           fullWidth
-          value={postData.titlee}
+          value={postData.title}
           onChange={(e) =>
             setPostData((prevState) => ({
               ...prevState,
