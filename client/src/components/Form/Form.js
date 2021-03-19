@@ -120,7 +120,7 @@ const Form = () => {
           onChange={(e) =>
             setPostData((prevState) => ({
               ...prevState,
-              tags: e.target.value,
+              tags: e.target.value.split(','),
             }))
           }
         ></TextField>
