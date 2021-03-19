@@ -20,7 +20,10 @@ const createPost = async (postData) => {
   return response.data;
 };
 
-const likePost = async () => {};
+const likePost = async (postId) => {
+  const response = await axios.patch(`${API_BASE_URL}/${postId}/likePost`);
+  return response.data;
+};
 
 const updatePost = async (postId, postData) => {
   const response = await axios.patch(`${API_BASE_URL}/${postId}`, postData);

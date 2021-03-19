@@ -5,6 +5,7 @@ import {
   SET_POST_TO_EDIT,
   UPDATE_POST,
   DELETE_POST,
+  LIKE_POST,
 } from '../constants/postsConstants';
 
 // Action creators
@@ -52,6 +53,16 @@ export const deletePost = (id) => {
     dispatch({
       type: DELETE_POST,
       payload: { id },
+    });
+  };
+};
+
+export const likePost = (id) => {
+  return async (dispatch) => {
+    const updatedPost = await postService.likePost(id);
+    dispatch({
+      type: LIKE_POST,
+      payload: { updatedPost },
     });
   };
 };

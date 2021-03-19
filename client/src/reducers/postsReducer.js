@@ -4,6 +4,7 @@ import {
   SET_POST_TO_EDIT,
   UPDATE_POST,
   DELETE_POST,
+  LIKE_POST,
 } from '../constants/postsConstants';
 
 // 'postToEdit' refers to the _id of the current post to edit
@@ -24,7 +25,8 @@ const reducer = (state = { postsList: [], postToEdit: null }, action) => {
       return { ...state, postToEdit: action.payload.id };
     }
 
-    case UPDATE_POST: {
+    case UPDATE_POST:
+    case LIKE_POST: {
       return {
         ...state,
         postsList: state.postsList.map((post) =>
