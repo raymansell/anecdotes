@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 if (process.env.NODE_ENV === 'production') {
-  API_BASE_URL = 'deployed backend url';
+  API_BASE_URL = 'https://anecdotes-project.herokuapp.com/api/posts';
 }
 
 const getAllPosts = async () => {
