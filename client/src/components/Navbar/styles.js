@@ -49,8 +49,14 @@ export default makeStyles((theme) => ({
     },
   },
   [theme.breakpoints.down('xs')]: {
+    heading: {
+      fontSize: '25px',
+    },
     appBar: {
       padding: '10px 10px',
+    },
+    image: {
+      display: 'none',
     },
   },
 }));

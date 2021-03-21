@@ -1,41 +1,20 @@
-import { useEffect } from 'react';
-import { Container, Grid } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { initializePosts } from './actions/postsActions';
+import { Container } from '@material-ui/core';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import Posts from './components/Posts/Posts';
-import Form from './components/Form/Form';
-
-import useStyles from './styles';
+import Home from './components/Home/Home';
 
 const App = () => {
-  const classes = useStyles();
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initializePosts());
-  }, [dispatch]);
-
   return (
-    <Container maxWidth='lg'>
-      <Navbar />
-      <Container>
-        <Grid
-          className={classes.mainContainer}
-          container
-          justify='space-between'
-          alignItems='stretch'
-          spacing={3}
-        >
-          <Grid item xs={12} md={7}>
-            <Posts />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Form />
-          </Grid>
-        </Grid>
+    <Router>
+      <Container maxWidth='lg'>
+        <Navbar />
+        <Switch>
+          <Route exact path='/'>
+            <Home />
+          </Route>
+        </Switch>
       </Container>
-    </Container>
+    </Router>
   );
 };
 
