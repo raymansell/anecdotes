@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
-import { Container, AppBar, Typography, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { initializePosts } from './actions/postsActions';
+import Navbar from './components/Navbar/Navbar';
 import Posts from './components/Posts/Posts';
 import Form from './components/Form/Form';
 
-import memories from './images/memories.png';
 import useStyles from './styles';
 
 const App = () => {
@@ -18,17 +18,7 @@ const App = () => {
 
   return (
     <Container maxWidth='lg'>
-      <AppBar className={classes.appBar} position='static' color='inherit'>
-        <Typography className={classes.heading} variant='h2' align='center'>
-          Anecdotes
-        </Typography>
-        <img
-          className={classes.image}
-          src={memories}
-          alt='memories'
-          height='60'
-        />
-      </AppBar>
+      <Navbar />
       <Container>
         <Grid
           className={classes.mainContainer}
