@@ -28,7 +28,9 @@ export const registerUser = async (req, res) => {
       id: user._id,
       fullName: `${user.firstName} ${user.lastName}`,
     };
-    const accessToken = jwt.sign(payloadForToken, process.env.JWT_SECRET);
+    const accessToken = jwt.sign(payloadForToken, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    });
     res.status(201).json({ accessToken, user: user._id });
   } catch (error) {
     const errors = handleErrors(error);
