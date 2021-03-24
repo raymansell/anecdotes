@@ -1,5 +1,6 @@
 import User from '../models/user.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export const getUsers = async (req, res) => {
   const users = await User.find().populate('posts', { title: 1, message: 1 });
@@ -23,7 +24,12 @@ export const registerUser = async (req, res) => {
       email,
       passwordHash,
     });
-    res.status(201).json({ user: user._id });
+    const payloadForToken = {
+      id: user._id,
+      fullName: `${user.firstName} ${user.lastName}`,
+    };
+    const accessToken = jwt.sign(payloadForToken, process.env.JWT_SECRET);
+    res.status(201).json({ accessToken, user: user._id });
   } catch (error) {
     const errors = handleErrors(error);
     res.status(400).json({ errors });
