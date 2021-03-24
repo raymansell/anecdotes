@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 
 import postsRoutes from './routes/posts.js';
+import usersRoutes from './routes/users.js';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: false,
+    useCreateIndex: true,
   })
   .then(() =>
     app.listen(PORT, console.log(`Server running on port: ${PORT}`.yellow.bold))
@@ -31,3 +33,4 @@ app.use(cors());
 
 // Routes
 app.use('/api/posts', postsRoutes);
+app.use('/api/users', usersRoutes);
