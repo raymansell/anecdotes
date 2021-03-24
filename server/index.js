@@ -6,6 +6,7 @@ import colors from 'colors';
 
 import postsRoutes from './routes/posts.js';
 import usersRoutes from './routes/users.js';
+import loginRoutes from './routes/login.js';
 
 dotenv.config();
 
@@ -34,3 +35,4 @@ app.use(cors());
 // Routes
 app.use('/api/posts', postsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/login', loginRoutes);

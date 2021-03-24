@@ -10,9 +10,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    creator: {
-      type: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
+      ref: 'User',
     },
     tags: [String],
     selectedFile: {

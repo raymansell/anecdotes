@@ -21,6 +21,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     // Requiredness and min length are validated in the controller before hashing.
   },
+  posts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'PostMessage',
+    },
+  ],
 });
 
 const User = mongoose.model('User', userSchema);
