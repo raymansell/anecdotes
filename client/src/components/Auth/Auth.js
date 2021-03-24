@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import {
   Avatar,
   Button,
@@ -9,15 +11,30 @@ import {
 } from '@material-ui/core';
 import Input from './Input';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { signin, signup } from '../../actions/authActions';
 import useStyles from './styles';
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmedPassword: '',
+};
 
 const Auth = () => {
   const classes = useStyles();
 
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
+  const [formData, setFormData] = useState(initialState);
 
-  const handleChange = () => {};
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleShowPassword = () =>
     setshowPassword((prevShowPassword) => !prevShowPassword);
@@ -27,7 +44,16 @@ const Auth = () => {
     setshowPassword(false);
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isSignup) {
+      dispatch(signup(formData, history));
+    } else {
+      dispatch(
+        signin({ email: formData.email, password: formData.password }, history)
+      );
+    }
+  };
 
   return (
     <Container component='main' maxWidth='xs'>
@@ -48,7 +74,7 @@ const Auth = () => {
                   half
                 />
                 <Input
-                  name='lasttName'
+                  name='lastName'
                   label='Last Name'
                   handleChange={handleChange}
                   half
@@ -59,6 +85,7 @@ const Auth = () => {
               name='email'
               label='Email Address'
               handleChange={handleChange}
+              autoFocus
               type='email'
             />
             <Input
@@ -70,7 +97,7 @@ const Auth = () => {
             />
             {isSignup && (
               <Input
-                name='confirmPassword'
+                name='confirmedPassword'
                 label='Repeat Password'
                 handleChange={handleChange}
                 type='password'

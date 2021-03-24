@@ -22,6 +22,7 @@ const Input = ({
         label={label}
         autoFocus={autoFocus}
         type={type}
+        inputProps={name === 'password' ? { minLength: 6 } : {}}
         InputProps={
           name === 'password'
             ? {
