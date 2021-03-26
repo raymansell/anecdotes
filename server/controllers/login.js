@@ -10,7 +10,7 @@ export const login = async (req, res) => {
 
   if (!(user && passwordCorrect)) {
     return res.status(401).json({
-      error: 'incorrect email or password',
+      error: 'Incorrect email or password',
     });
   }
 
@@ -22,5 +22,5 @@ export const login = async (req, res) => {
     expiresIn: '1h',
   });
 
-  res.json({ accessToken, user: user._id });
+  res.json({ accessToken, name: `${user.firstName} ${user.lastName}` });
 };

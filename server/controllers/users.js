@@ -8,7 +8,7 @@ export const getUsers = async (req, res) => {
 };
 
 export const registerUser = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password, confirmedPassword } = req.body;
   if (!password || password.length < 6) {
     return res.status(400).json({
       errors: {
@@ -16,6 +16,12 @@ export const registerUser = async (req, res) => {
       },
     });
   }
+  if (password !== confirmedPassword) {
+    return res
+      .status(404)
+      .json({ errors: { password: 'Passwords do not match' } });
+  }
+
   try {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = await User.create({
@@ -31,7 +37,9 @@ export const registerUser = async (req, res) => {
     const accessToken = jwt.sign(payloadForToken, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
-    res.status(201).json({ accessToken, user: user._id });
+    res
+      .status(201)
+      .json({ accessToken, name: `${user.firstName} ${user.lastName}` });
   } catch (error) {
     const errors = handleErrors(error);
     res.status(400).json({ errors });

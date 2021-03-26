@@ -1,16 +1,51 @@
-import { SIGN_IN, SIGN_UP } from '../constants/authConstants';
+import {
+  SIGN_IN,
+  SIGN_IN_ERROR,
+  SIGN_UP,
+  SIGN_UP_ERROR,
+  CLEAR_ERRORS,
+  LOG_OUT,
+} from '../constants/authConstants';
 
-const reducer = (state = { loggedUser: null }, action) => {
+const reducer = (state = {}, action) => {
   switch (action.type) {
     case SIGN_IN:
     case SIGN_UP: {
+      localStorage.setItem(
+        'user',
+        JSON.stringify({
+          name: action.payload.name,
+          token: action.payload.accessToken,
+        })
+      );
       return {
         ...state,
-        loggedUser: {
-          id: action.payload.user,
-          token: action.payload.accessToken,
-        },
+        errors: null,
+        name: action.payload.name,
+        token: action.payload.accessToken,
       };
+    }
+    case SIGN_IN_ERROR: {
+      return {
+        ...state,
+        errors: { wrongEmailOrPassword: action.payload.error },
+      };
+    }
+    case SIGN_UP_ERROR: {
+      return {
+        ...state,
+        errors: action.payload.errors,
+      };
+    }
+    case CLEAR_ERRORS: {
+      return {
+        ...state,
+        errors: null,
+      };
+    }
+    case LOG_OUT: {
+      localStorage.removeItem('user');
+      return null;
     }
 
     default:

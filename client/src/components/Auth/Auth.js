@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import {
   Avatar,
@@ -9,9 +9,10 @@ import {
   Typography,
   Container,
 } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import Input from './Input';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { signin, signup } from '../../actions/authActions';
+import { signin, signup, clearErrors } from '../../actions/authActions';
 import useStyles from './styles';
 
 const initialState = {
@@ -24,13 +25,16 @@ const initialState = {
 
 const Auth = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const [isSignup, setIsSignup] = useState(false);
   const [showPassword, setshowPassword] = useState(false);
   const [formData, setFormData] = useState(initialState);
 
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const errorMessages = useSelector(({ userInfo }) =>
+    userInfo?.errors ? Object.values(userInfo?.errors) : []
+  );
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,8 +44,10 @@ const Auth = () => {
     setshowPassword((prevShowPassword) => !prevShowPassword);
 
   const switchMode = () => {
+    setFormData(initialState);
     setIsSignup((prevState) => !prevState);
     setshowPassword(false);
+    dispatch(clearErrors());
   };
 
   const handleSubmit = (e) => {
@@ -62,12 +68,13 @@ const Auth = () => {
           <LockOutlinedIcon />
         </Avatar>
         <Typography variant='h5'>{isSignup ? 'Sign Up' : 'Sign In'}</Typography>
-        <form className={classes.form} onSubmit={handleSubmit}>
+        <form className={classes.form} onSubmit={handleSubmit} noValidate>
           <Grid container spacing={2}>
             {isSignup && (
               <>
                 <Input
                   name='firstName'
+                  value={formData.firstName}
                   label='First Name'
                   handleChange={handleChange}
                   autoFocus
@@ -75,6 +82,7 @@ const Auth = () => {
                 />
                 <Input
                   name='lastName'
+                  value={formData.lastName}
                   label='Last Name'
                   handleChange={handleChange}
                   half
@@ -83,6 +91,7 @@ const Auth = () => {
             )}
             <Input
               name='email'
+              value={formData.email}
               label='Email Address'
               handleChange={handleChange}
               autoFocus
@@ -90,6 +99,7 @@ const Auth = () => {
             />
             <Input
               name='password'
+              value={formData.password}
               label='Password'
               handleChange={handleChange}
               type={showPassword ? 'text' : 'password'}
@@ -98,10 +108,29 @@ const Auth = () => {
             {isSignup && (
               <Input
                 name='confirmedPassword'
+                value={formData.confirmedPassword}
                 label='Repeat Password'
                 handleChange={handleChange}
                 type='password'
               />
+            )}
+            {errorMessages.length > 0 && (
+              <Grid item xs={12} sm={12}>
+                {errorMessages.map((e, i) => {
+                  if (e) {
+                    return (
+                      <Alert
+                        key={i}
+                        severity='error'
+                        style={{ marginTop: '5px' }}
+                      >
+                        {e}
+                      </Alert>
+                    );
+                  }
+                  return null;
+                })}
+              </Grid>
             )}
           </Grid>
           <Button
