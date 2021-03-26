@@ -21,8 +21,11 @@ export const initializePosts = () => {
 };
 
 export const createPost = (postData) => {
-  return async (dispatch) => {
-    const newPost = await postService.createPost(postData);
+  return async (dispatch, getState) => {
+    const {
+      userInfo: { token },
+    } = getState();
+    const newPost = await postService.createPost(postData, token);
     dispatch({
       type: CREATE_NEW_POST,
       payload: { newPost },
@@ -38,8 +41,11 @@ export const setPostToEdit = (id) => {
 };
 
 export const updatePost = (id, postData) => {
-  return async (dispatch) => {
-    const updatedPost = await postService.updatePost(id, postData);
+  return async (dispatch, getState) => {
+    const {
+      userInfo: { token },
+    } = getState();
+    const updatedPost = await postService.updatePost(id, postData, token);
     dispatch({
       type: UPDATE_POST,
       payload: { updatedPost },
@@ -48,8 +54,11 @@ export const updatePost = (id, postData) => {
 };
 
 export const deletePost = (id) => {
-  return async (dispatch) => {
-    await postService.deletePost(id);
+  return async (dispatch, getState) => {
+    const {
+      userInfo: { token },
+    } = getState();
+    await postService.deletePost(id, token);
     dispatch({
       type: DELETE_POST,
       payload: { id },
@@ -58,8 +67,11 @@ export const deletePost = (id) => {
 };
 
 export const likePost = (id) => {
-  return async (dispatch) => {
-    const updatedPost = await postService.likePost(id);
+  return async (dispatch, getState) => {
+    const {
+      userInfo: { token },
+    } = getState();
+    const updatedPost = await postService.likePost(id, token);
     dispatch({
       type: LIKE_POST,
       payload: { updatedPost },

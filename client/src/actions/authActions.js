@@ -11,8 +11,8 @@ import {
 export const signin = (credentials, history) => {
   return async (dispatch) => {
     try {
-      const { accessToken, name } = await authService.signin(credentials);
-      dispatch({ type: SIGN_IN, payload: { accessToken, name } });
+      const { accessToken, name, id } = await authService.signin(credentials);
+      dispatch({ type: SIGN_IN, payload: { accessToken, name, id } });
       history.push('/');
     } catch (error) {
       dispatch({
@@ -26,13 +26,13 @@ export const signin = (credentials, history) => {
 export const signup = (formData, history) => {
   return async (dispatch) => {
     try {
-      const { accessToken, name } = await authService.signup(formData);
-      dispatch({ type: SIGN_UP, payload: { accessToken, name } });
+      const { accessToken, name, id } = await authService.signup(formData);
+      dispatch({ type: SIGN_UP, payload: { accessToken, name, id } });
       history.push('/');
     } catch (error) {
       dispatch({
         type: SIGN_UP_ERROR,
-        payload: { errors: error.response.data.errors }, // ACÁ QUEDÉ xd
+        payload: { errors: error.response.data.errors },
       });
     }
   };

@@ -27,9 +27,12 @@ export const createPost = async (req, res) => {
       selectedFile,
       user: user._id,
     });
-    const savedPost = await newPost.save();
+    let savedPost = await newPost.save();
     user.posts = user.posts.concat(savedPost._id);
     await user.save();
+    // populating after saving to db (without re-querying)
+    savedPost = savedPost.toObject();
+    savedPost.user = user;
     res.status(201).json(savedPost);
   } catch (error) {
     res.status(409).json({ message: error.message });
@@ -56,7 +59,11 @@ export const updatePost = async (req, res) => {
         runValidators: true,
       }
     );
-    return res.json(updatedPost);
+    // populating after saving to db (requerying)
+    const updatedPostPopulated = await updatedPost
+      .populate('user')
+      .execPopulate();
+    return res.json(updatedPostPopulated);
   } else {
     return res.status(401).json({ error: 'unauthorized' });
   }
@@ -97,10 +104,12 @@ export const likePost = async (req, res) => {
   } else {
     post.likes = post.likes.concat(userId); // liking a post
   }
-
   const updatedPost = await PostMessage.findByIdAndUpdate(postId, post, {
     new: true,
   });
-
-  res.json(updatedPost);
+  // populating after saving to db (requerying)
+  const updatedPostPopulated = await updatedPost
+    .populate('user')
+    .execPopulate();
+  return res.json(updatedPostPopulated);
 };

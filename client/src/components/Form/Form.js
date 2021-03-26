@@ -15,7 +15,6 @@ const Form = () => {
   const dispatch = useDispatch();
 
   const [postData, setPostData] = useState({
-    creator: '',
     title: '',
     message: '',
     tags: '',
@@ -30,6 +29,8 @@ const Form = () => {
         )
       : null
   );
+
+  const user = useSelector(({ userInfo }) => userInfo);
 
   useEffect(() => {
     if (currentPost !== null) {
@@ -50,13 +51,22 @@ const Form = () => {
   const clear = () => {
     dispatch(setPostToEdit(null));
     setPostData({
-      creator: '',
       title: '',
       message: '',
       tags: '',
       selectedFile: '',
     });
   };
+
+  if (!user?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant='h6' align='center'>
+          Please Sign In to create your own anecdotes and like other's anecdotes
+        </Typography>
+      </Paper>
+    );
+  }
 
   return (
     <Paper className={classes.paper}>
@@ -68,20 +78,6 @@ const Form = () => {
         <Typography variant='h6'>
           {currentPost ? 'Editing' : 'Creating'} an Anecdote
         </Typography>
-        <TextField
-          required
-          name='creator'
-          variant='outlined'
-          label='Creator'
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData((prevState) => ({
-              ...prevState,
-              creator: e.target.value,
-            }))
-          }
-        ></TextField>
         <TextField
           required
           name='title'
@@ -114,7 +110,7 @@ const Form = () => {
           required
           name='tags'
           variant='outlined'
-          label='Tags'
+          label='Tags (comma separated)'
           fullWidth
           value={postData.tags}
           onChange={(e) =>

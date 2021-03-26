@@ -15,23 +15,35 @@ const getAllPosts = async () => {
   return response.data;
 };
 
-const createPost = async (postData) => {
-  const response = await axios.post(API_BASE_URL, postData);
+const createPost = async (postData, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.post(API_BASE_URL, postData, config);
   return response.data;
 };
 
-const likePost = async (postId) => {
-  const response = await axios.patch(`${API_BASE_URL}/${postId}/likePost`);
+const likePost = async (postId, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.patch(
+    `${API_BASE_URL}/${postId}/likePost`,
+    {},
+    config
+  );
   return response.data;
 };
 
-const updatePost = async (postId, postData) => {
-  const response = await axios.patch(`${API_BASE_URL}/${postId}`, postData);
+const updatePost = async (postId, postData, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.patch(
+    `${API_BASE_URL}/${postId}`,
+    postData,
+    config
+  );
   return response.data;
 };
 
-const deletePost = async (postId) => {
-  const response = await axios.delete(`${API_BASE_URL}/${postId}`);
+const deletePost = async (postId, token) => {
+  const config = { headers: { Authorization: `Bearer ${token}` } };
+  const response = await axios.delete(`${API_BASE_URL}/${postId}`, config);
   return response.data;
 };
 

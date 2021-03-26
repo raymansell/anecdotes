@@ -6,7 +6,7 @@ import {
   Button,
   Typography,
 } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setPostToEdit,
   deletePost,
@@ -21,8 +21,8 @@ import useStyles from './styles';
 
 const Post = ({ post }) => {
   const classes = useStyles();
-
   const dispatch = useDispatch();
+  const user = useSelector(({ userInfo }) => userInfo);
 
   return (
     <Card className={classes.card}>
@@ -32,18 +32,20 @@ const Post = ({ post }) => {
         title={post.title}
       />
       <div className={classes.overlay}>
-        <Typography variant='h6'>{post.creator}</Typography>
+        <Typography variant='h6'>{`${post.user.firstName} ${post.user.lastName}`}</Typography>
         <Typography variant='h6'>{moment(post.createdAt).fromNow()}</Typography>
       </div>
-      <div className={classes.overlay2}>
-        <Button
-          style={{ color: 'white' }}
-          size='small'
-          onClick={() => dispatch(setPostToEdit(post._id))}
-        >
-          <MoreHorizIcon fontSize='default' />
-        </Button>
-      </div>
+      {user?.id === post.user._id && (
+        <div className={classes.overlay2}>
+          <Button
+            style={{ color: 'white' }}
+            size='small'
+            onClick={() => dispatch(setPostToEdit(post._id))}
+          >
+            <MoreHorizIcon fontSize='default' />
+          </Button>
+        </div>
+      )}
       <div className={classes.details}>
         <Typography variant='body2' color='textSecondary'>
           {post.tags.map((tag) => `#${tag} `)}
@@ -67,19 +69,27 @@ const Post = ({ post }) => {
           size='small'
           color='primary'
           onClick={() => dispatch(likePost(post._id))}
+          disabled={!user?.name}
         >
           <ThumbUpAltIcon fontSize='small' />
-          &nbsp; Like &nbsp;
-          {post.likeCount}
+          &nbsp;
+          {post.likes.length > 0
+            ? post.likes.length === 1
+              ? `1 like`
+              : `${post.likes.length} likes`
+            : 'like'}
         </Button>
-        <Button
-          size='small'
-          color='primary'
-          onClick={() => dispatch(deletePost(post._id))}
-        >
-          <DeleteIcon fontSize='small' />
-          Delete
-        </Button>
+        {user?.id === post.user._id && (
+          <Button
+            size='small'
+            color='primary'
+            onClick={() => dispatch(deletePost(post._id))}
+            disabled={!user?.name}
+          >
+            <DeleteIcon fontSize='small' />
+            Delete
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

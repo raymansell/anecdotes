@@ -16,6 +16,7 @@ const reducer = (state = {}, action) => {
         JSON.stringify({
           name: action.payload.name,
           token: action.payload.accessToken,
+          id: action.payload.id,
         })
       );
       return {
@@ -23,6 +24,7 @@ const reducer = (state = {}, action) => {
         errors: null,
         name: action.payload.name,
         token: action.payload.accessToken,
+        id: action.payload.id,
       };
     }
     case SIGN_IN_ERROR: {

@@ -29,7 +29,7 @@ const Navbar = () => {
         logout();
       }
     }
-  }, [location]);
+  }, [location, user?.token]);
 
   return (
     <AppBar className={classes.appBar} position='static' color='inherit'>

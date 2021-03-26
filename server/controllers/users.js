@@ -39,7 +39,11 @@ export const registerUser = async (req, res) => {
     });
     res
       .status(201)
-      .json({ accessToken, name: `${user.firstName} ${user.lastName}` });
+      .json({
+        accessToken,
+        name: `${user.firstName} ${user.lastName}`,
+        id: user._id,
+      });
   } catch (error) {
     const errors = handleErrors(error);
     res.status(400).json({ errors });

@@ -22,5 +22,9 @@ export const login = async (req, res) => {
     expiresIn: '1h',
   });
 
-  res.json({ accessToken, name: `${user.firstName} ${user.lastName}` });
+  res.json({
+    accessToken,
+    name: `${user.firstName} ${user.lastName}`,
+    id: user._id,
+  });
 };
