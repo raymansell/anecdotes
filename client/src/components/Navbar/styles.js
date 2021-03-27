@@ -8,6 +8,7 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    flexWrap: 'wrap',
     alignItems: 'center',
     padding: '10px 50px',
   },
@@ -18,19 +19,15 @@ export default makeStyles((theme) => ({
   image: {
     marginLeft: '15px',
   },
-  toolbar: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    width: '400px',
-  },
   profile: {
     display: 'flex',
-    justifyContent: 'space-between',
-    width: '400px',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
   },
   userName: {
     display: 'flex',
     alignItems: 'center',
+    marginRight: '15px',
   },
   brandContainer: {
     display: 'flex',
@@ -39,24 +36,33 @@ export default makeStyles((theme) => ({
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
+    marginRight: '15px',
   },
   [theme.breakpoints.down('sm')]: {
     heading: {
-      fontSize: '40px',
+      fontSize: '50px',
     },
     appBar: {
       padding: '10px 30px',
+      justifyContent: 'space-around',
+    },
+    brandContainer: {
+      marginBottom: '5px',
+    },
+    username: {
+      marginBottom: '5px',
+    },
+    purple: {
+      marginBottom: '5px',
     },
   },
   [theme.breakpoints.down('xs')]: {
     heading: {
-      fontSize: '25px',
+      fontSize: '35px',
     },
     appBar: {
+      flexDirection: 'column',
       padding: '10px 10px',
-    },
-    image: {
-      display: 'none',
     },
   },
 }));
