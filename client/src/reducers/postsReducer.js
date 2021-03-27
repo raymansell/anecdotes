@@ -17,7 +17,7 @@ const reducer = (state = { postsList: [], postToEdit: null }, action) => {
     case CREATE_NEW_POST: {
       return {
         ...state,
-        postsList: [...state.postsList, action.payload.newPost],
+        postsList: [action.payload.newPost, ...state.postsList],
       };
     }
 
