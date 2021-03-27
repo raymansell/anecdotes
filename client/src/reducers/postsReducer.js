@@ -40,6 +40,7 @@ const reducer = (state = { postsList: [], postToEdit: null }, action) => {
     case DELETE_POST: {
       return {
         ...state,
+        postToEdit: null,
         postsList: state.postsList.filter(
           (post) => post._id !== action.payload.id
         ),
